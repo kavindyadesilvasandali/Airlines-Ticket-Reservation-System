@@ -6,9 +6,17 @@
 //import java.sql.DriverManager;
 //import java.sql.SQLException;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.*;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -32,6 +40,8 @@ public class addCustomer extends javax.swing.JInternalFrame {
     }
     Connection con;
     PreparedStatement pst;
+    String path= null;
+    byte[] userimage =null;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -202,6 +212,11 @@ public class addCustomer extends javax.swing.JInternalFrame {
         txtPhoto.setPreferredSize(new java.awt.Dimension(100, 100));
 
         jButton1.setText("Browse");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Add");
 
@@ -261,6 +276,28 @@ public class addCustomer extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            JFileChooser picchooser = new JFileChooser();   
+        picchooser.showOpenDialog(null);
+        File pic= picchooser.getSelectedFile();        
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.images","png","jpg");
+        picchooser.addChoosableFileFilter(filter);        
+        path=pic.getAbsolutePath();
+        BufferedImage img;            
+        img = ImageIO.read(picchooser.getSelectedFile());
+        ImageIcon imageIcon = new ImageIcon( new
+        ImageIcon(img).getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT));
+            txtPhoto.setIcon(imageIcon);
+        } catch (IOException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void autoID(){
         try {
