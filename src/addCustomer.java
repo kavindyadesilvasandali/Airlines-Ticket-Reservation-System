@@ -8,14 +8,19 @@
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -70,8 +75,8 @@ public class addCustomer extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txtdob = new com.toedter.calendar.JDateChooser();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        r1 = new javax.swing.JRadioButton();
+        r2 = new javax.swing.JRadioButton();
         txtContact = new javax.swing.JTextField();
         txtPhoto = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -97,6 +102,12 @@ public class addCustomer extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Adrdess");
+
+        txtPassport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPassportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,9 +175,9 @@ public class addCustomer extends javax.swing.JInternalFrame {
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setText("Contact");
 
-        jRadioButton1.setText("Male");
+        r1.setText("Male");
 
-        jRadioButton2.setText("Female");
+        r2.setText("Female");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -181,9 +192,9 @@ public class addCustomer extends javax.swing.JInternalFrame {
                 .addGap(45, 45, 45)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                        .addComponent(r1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2))
+                        .addComponent(r2))
                     .addComponent(txtdob, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                     .addComponent(txtContact))
                 .addContainerGap(53, Short.MAX_VALUE))
@@ -199,8 +210,8 @@ public class addCustomer extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButton1)
-                        .addComponent(jRadioButton2)))
+                        .addComponent(r1)
+                        .addComponent(r2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
@@ -219,8 +230,18 @@ public class addCustomer extends javax.swing.JInternalFrame {
         });
 
         jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Cancel");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -292,12 +313,82 @@ public class addCustomer extends javax.swing.JInternalFrame {
         ImageIcon imageIcon = new ImageIcon( new
         ImageIcon(img).getImage().getScaledInstance(100,100,Image.SCALE_DEFAULT));
             txtPhoto.setIcon(imageIcon);
+            
+            File image= new File(path);
+            FileInputStream fis = new FileInputStream(image);
+            ByteArrayOutputStream baos= new ByteArrayOutputStream();
+            byte[] buff = new byte[1024];
+            for(int readNum;(readNum= fis.read(buff))!=-1;)
+            {
+             baos.write(buff,0,readNum);
+            }
+            userimage=baos.toByteArray();
+            
         } catch (IOException ex) {
             Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String id = txtid.getText();
+        String firstname =txtFirstname.getText();
+        String lastname = txtLastname.getText();
+        String nicno = txtnic.getText();
+        String passport = txtPassport.getText();
+        String address = txtaddress.getText();
+        
+        DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
+        String date= da.format(txtdob.getDate());
+        String Gender;
+        
+        if(r1.isSelected()){
+            Gender="Male";
+        }
+        else
+        {
+            Gender="Female";
+        }
+        String contact = txtContact.getText();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            pst= con.prepareStatement("insert into customer(id,firstname,lastname,nicno,passport,address,dob, gender, contact,photo)values(?,?,?,?,?,?,?,?,?,?)");
+            
+            pst.setString(1, id);
+            pst.setString(2, firstname);
+            pst.setString(3, lastname);
+            pst.setString(4, nicno);
+            pst.setString(5, passport);
+            pst.setString(6, address);
+            pst.setString(7, date);
+            pst.setString(8, Gender);
+            pst.setString(9, contact);
+            pst.setBytes(10, userimage);
+            pst.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Registration created.....");
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtPassportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPassportActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.hide();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void autoID(){
         try {
@@ -338,8 +429,8 @@ public class addCustomer extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton r1;
+    private javax.swing.JRadioButton r2;
     private javax.swing.JTextField txtContact;
     private javax.swing.JTextField txtFirstname;
     private javax.swing.JTextField txtLastname;
