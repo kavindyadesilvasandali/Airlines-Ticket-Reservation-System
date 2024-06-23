@@ -1,3 +1,16 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -14,7 +27,10 @@ public class addFlight extends javax.swing.JInternalFrame {
      */
     public addFlight() {
         initComponents();
+        autoID();
     }
+    Connection con;
+    PreparedStatement pst; 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,7 +43,7 @@ public class addFlight extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        txtflightid = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -50,7 +66,9 @@ public class addFlight extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Flight ID");
 
-        jLabel2.setText("jLabel2");
+        txtflightid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtflightid.setForeground(new java.awt.Color(255, 255, 0));
+        txtflightid.setText("jLabel2");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Flight Name");
@@ -74,6 +92,11 @@ public class addFlight extends javax.swing.JInternalFrame {
         jLabel9.setText("Flight Charge");
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancel");
 
@@ -84,20 +107,16 @@ public class addFlight extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(120, 120, 120)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addGap(46, 46, 46)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtsource, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtflightname, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1))
+                .addGap(46, 46, 46)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtflightid, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtsource, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtflightname, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(103, 103, 103)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
@@ -125,7 +144,7 @@ public class addFlight extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2)
+                        .addComponent(txtflightid)
                         .addComponent(jLabel6))
                     .addComponent(txtdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,18 +200,86 @@ public class addFlight extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+      public void autoID(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery("select MAX(id) from flight");
+            rs.next();
+            rs.getString("MAX(id)");
+            if(rs.getString("MAX(id)")==null){
+                txtflightid.setText("FO001");
+            }
+            else{
+                long id = Long.parseLong(rs.getString("MAX(id)").substring(2,rs.getString("MAX(id)").length()));
+                id++;
+                txtflightid.setText("FO" + String.format("%03d", id));
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String id = txtflightid.getText();
+        String flightname =txtflightname.getText();
+        String source = txtsource.getText();
+        String depart = txtdepart.getText();
+                
+        DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
+        String date= da.format(txtdate.getDate());
+        
+        String departime = txtdtime.getText();
+        String arrtime = txtartime.getText();
+        String flightcharge = txtflightcharge.getText();
+        
+       
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            pst= con.prepareStatement("insert into flight(id, flightname, source, depart,date,deptime,arrtime,flightcharge)values(?,?,?,?,?,?,?,?)");
+            
+            pst.setString(1, id);
+            pst.setString(2, flightname);
+            pst.setString(3, source);
+            pst.setString(4, depart);
+            pst.setString(5,date);
+            pst.setString(6, departime);
+            pst.setString(7, arrtime);
+            pst.setString(8, flightcharge);
+            
+            pst.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Flight created.....");
+            
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(addFlight.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(addFlight.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+            
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -206,6 +293,7 @@ public class addFlight extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtdepart;
     private javax.swing.JTextField txtdtime;
     private javax.swing.JTextField txtflightcharge;
+    private javax.swing.JLabel txtflightid;
     private javax.swing.JTextField txtflightname;
     private javax.swing.JTextField txtsource;
     // End of variables declaration//GEN-END:variables
