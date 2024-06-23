@@ -229,7 +229,7 @@ public class searchCustomer extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Add");
+        jButton2.setText("Update");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -350,7 +350,7 @@ public class searchCustomer extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        //String id = txtid.getText();
+        String id = txtcustid.getText();
         String firstname =txtFirstname.getText();
         String lastname = txtLastname.getText();
         String nicno = txtnic.getText();
@@ -373,21 +373,22 @@ public class searchCustomer extends javax.swing.JInternalFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
-            pst= con.prepareStatement("insert into customer(id,firstname,lastname,nicno,passport,address,dob, gender, contact,photo)values(?,?,?,?,?,?,?,?,?,?)");
+            pst= con.prepareStatement("update customer set firstname=?,lastname=?,nicno=?,passport=?,address=?,dob=?, gender=?, contact=?,photo=? where id=?");
             
-            //pst.setString(1, id);
-            pst.setString(2, firstname);
-            pst.setString(3, lastname);
-            pst.setString(4, nicno);
-            pst.setString(5, passport);
-            pst.setString(6, address);
-            pst.setString(7, date);
-            pst.setString(8, Gender);
-            pst.setString(9, contact);
-            pst.setBytes(10, userimage);
+            
+            pst.setString(1, firstname);
+            pst.setString(2, lastname);
+            pst.setString(3, nicno);
+            pst.setString(4, passport);
+            pst.setString(5, address);
+            pst.setString(6, date);
+            pst.setString(7, Gender);
+            pst.setString(8, contact);
+            pst.setBytes(9, userimage);
+            pst.setString(10, id);
             pst.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Registration created.....");
+            JOptionPane.showMessageDialog(null, "Registration updateddd.....");
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
