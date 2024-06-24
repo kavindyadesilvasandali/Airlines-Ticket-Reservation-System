@@ -106,6 +106,11 @@ public class Main extends javax.swing.JFrame {
         jMenu4.setText("User");
 
         jMenuItem5.setText("User Creation");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem5);
 
         jMenuBar1.add(jMenu4);
@@ -165,6 +170,13 @@ public class Main extends javax.swing.JFrame {
         jDesktopPane1.add(tr);
         tr.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        userCreation uc = new userCreation();
+        jDesktopPane1.add(uc);
+        uc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
