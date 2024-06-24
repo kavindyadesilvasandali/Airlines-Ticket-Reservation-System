@@ -1,3 +1,14 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -15,6 +26,8 @@ public class ticket extends javax.swing.JInternalFrame {
     public ticket() {
         initComponents();
     }
+    Connection con;
+    PreparedStatement pst; 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,7 +89,7 @@ public class ticket extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Flight No", "Flight Name", "Source", "Departure", "DepTime", "ArrTime", "Charge"
+                "Flight No", "Flight Name", "Source", "Departure", "Date", "DepTime", "ArrTime", "Charge"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -338,11 +351,9 @@ public class ticket extends javax.swing.JInternalFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40))))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -354,7 +365,7 @@ public class ticket extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -371,7 +382,7 @@ public class ticket extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         pack();
@@ -383,6 +394,48 @@ public class ticket extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String source= txtsource.getSelectedItem().toString().trim();
+        String depart= txtdepart.getSelectedItem().toString().trim();
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            pst= con.prepareStatement("select * from flight where source=? and depart=?");
+            pst.setString(1, source);
+            pst.setString(2, depart);
+            ResultSet rs= pst.executeQuery();
+            
+            ResultSetMetaData rsm = rs.getMetaData();
+            int c;
+            c= rsm.getColumnCount();
+            
+            DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+            Df.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v2= new Vector();
+                
+                for(int i=1; i<=c;i++){
+                    v2.add(rs.getString("id" ));
+                    v2.add(rs.getString("flightname" ));
+                    v2.add(rs.getString("source" ));
+                    v2.add(rs.getString("depart" ));
+                    v2.add(rs.getString("date" ));
+                    v2.add(rs.getString("deptime" ));
+                    v2.add(rs.getString("arrtime" ));
+                    v2.add(rs.getString("flightcharge" ));
+                }
+                Df.addRow(v2);
+                                
+            }
+            
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
         
     }//GEN-LAST:event_jButton1ActionPerformed
 

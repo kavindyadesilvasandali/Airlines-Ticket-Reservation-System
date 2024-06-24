@@ -245,8 +245,8 @@ public class addFlight extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String id = txtflightid.getText();
         String flightname =txtflightname.getText();
-        String source = txtsource.getSelectedItem().toString();
-        String depart = txtdepart.getSelectedItem().toString();
+        String source = txtsource.getSelectedItem().toString().trim();
+        String depart = txtdepart.getSelectedItem().toString().trim();
                 
         DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
         String date= da.format(txtdate.getDate());
