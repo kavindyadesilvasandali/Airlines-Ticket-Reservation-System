@@ -540,18 +540,13 @@ public class ticket extends javax.swing.JInternalFrame {
                     v2.add(rs.getString("arrtime" ));
                     v2.add(rs.getString("flightcharge" ));
                 }
-                Df.addRow(v2);
-                                
+                Df.addRow(v2); 
             }
-            
-            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void autoID(){
@@ -597,22 +592,17 @@ public class ticket extends javax.swing.JInternalFrame {
                 String fname = rs.getString("firstname");
                 String lname = rs.getString("lastname");
                 String passport = rs.getString("passport");
-               
-                
                 
                  txtFirstname.setText(fname.trim());
                  txtlastname.setText(lname.trim());                 
-                 txtpassport.setText(passport.trim());
-                                 
+                 txtpassport.setText(passport.trim());                                 
             }
-            
-            
+           
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(ticket.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
             
     }//GEN-LAST:event_txtcustidzActionPerformed
 
