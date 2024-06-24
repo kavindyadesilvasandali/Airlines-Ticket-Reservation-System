@@ -253,8 +253,7 @@ public class addFlight extends javax.swing.JInternalFrame {
         
         String departime = txtdtime.getText();
         String arrtime = txtartime.getText();
-        String flightcharge = txtflightcharge.getText();
-        
+        String flightcharge = txtflightcharge.getText();        
        
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -272,8 +271,7 @@ public class addFlight extends javax.swing.JInternalFrame {
             
             pst.executeUpdate();
             
-            JOptionPane.showMessageDialog(null, "Flight created.....");
-            
+            JOptionPane.showMessageDialog(null, "Flight created.....");            
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(addFlight.class.getName()).log(Level.SEVERE, null, ex);
