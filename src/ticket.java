@@ -29,6 +29,7 @@ public class ticket extends javax.swing.JInternalFrame {
      */
     public ticket() {
         initComponents();
+        autoID();
     }
     Connection con;
     PreparedStatement pst; 
@@ -50,7 +51,7 @@ public class ticket extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        txticketno = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -111,9 +112,9 @@ public class ticket extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Ticket No");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel4.setText("Ticket no");
+        txticketno.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txticketno.setForeground(new java.awt.Color(255, 0, 0));
+        txticketno.setText("Ticket no");
 
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 150));
 
@@ -381,7 +382,7 @@ public class ticket extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtdepart, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(31, 31, 31)
-                                .addComponent(jLabel4)))
+                                .addComponent(txticketno)))
                         .addGap(12, 12, 12)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
@@ -392,7 +393,7 @@ public class ticket extends javax.swing.JInternalFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
+                .addComponent(txticketno)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -497,6 +498,30 @@ public class ticket extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void autoID(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery("select MAX(id) from ticket");
+            rs.next();
+            rs.getString("MAX(id)");
+            if(rs.getString("MAX(id)")==null){
+                txticketno.setText("T001");
+            }
+            else{
+                long id = Long.parseLong(rs.getString("MAX(id)").substring(2,rs.getString("MAX(id)").length()));
+                id++;
+                txticketno.setText("T" + String.format("%03d", id));
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void txtcustidzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcustidzActionPerformed
         // TODO add your handling code here:
          String id = txtcustid.getText();
@@ -573,7 +598,6 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -595,6 +619,7 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JLabel txtdeptime;
     private javax.swing.JLabel txtflightname;
     private javax.swing.JLabel txtflightno;
+    private javax.swing.JLabel txticketno;
     private javax.swing.JLabel txtlastname;
     private javax.swing.JLabel txtpassport;
     private javax.swing.JComboBox<String> txtsource;
