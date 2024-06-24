@@ -76,11 +76,12 @@ public class ticket extends javax.swing.JInternalFrame {
         txtflightname = new javax.swing.JLabel();
         txtdeptime = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
-        jSpinner1 = new javax.swing.JSpinner();
+        txtprice = new javax.swing.JTextField();
+        txtseats = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        txtotal = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1800, 1500));
 
@@ -260,14 +261,18 @@ public class ticket extends javax.swing.JInternalFrame {
         txtdeptime.setForeground(new java.awt.Color(255, 0, 0));
         txtdeptime.setText("jLabel20");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Economy", "Business" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox3ActionPerformed(evt);
             }
         });
 
-        jTextField2.setText("jTextField2");
+        txtseats.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                txtseatsStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -292,10 +297,10 @@ public class ticket extends javax.swing.JInternalFrame {
                             .addComponent(jLabel16))
                         .addGap(37, 37, 37)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtdeptime, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtseats, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -320,11 +325,11 @@ public class ticket extends javax.swing.JInternalFrame {
                 .addGap(2, 2, 2)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtprice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtseats, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(215, Short.MAX_VALUE))
         );
 
@@ -349,6 +354,10 @@ public class ticket extends javax.swing.JInternalFrame {
             }
         });
 
+        txtotal.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtotal.setForeground(new java.awt.Color(255, 0, 0));
+        txtotal.setText("Total");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -365,10 +374,15 @@ public class ticket extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2)
+                                    .addComponent(jButton3)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(txtotal))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -418,7 +432,9 @@ public class ticket extends javax.swing.JInternalFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3))))
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtotal))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -577,11 +593,21 @@ public class ticket extends javax.swing.JInternalFrame {
         txtflightno.setText(Df.getValueAt(selectIndex,0).toString());
         txtflightname.setText(Df.getValueAt(selectIndex,1).toString());
         txtdeptime.setText(Df.getValueAt(selectIndex,5).toString());
-        
+        txtprice.setText(Df.getValueAt(selectIndex,7).toString());
         
         
         
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void txtseatsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_txtseatsStateChanged
+        // TODO add your handling code here:
+        int price =Integer.parseInt(txtprice.getText());
+        int qty= Integer.parseInt(txtseats.getValue().toString());
+        
+        int tot =price* qty;
+        
+        txtotal.setText(String.valueOf(tot));
+    }//GEN-LAST:event_txtseatsStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -607,9 +633,7 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel txtFirstname;
     private javax.swing.JLabel txtLastname;
     private javax.swing.JLabel txtPassport;
@@ -621,7 +645,10 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JLabel txtflightno;
     private javax.swing.JLabel txticketno;
     private javax.swing.JLabel txtlastname;
+    private javax.swing.JLabel txtotal;
     private javax.swing.JLabel txtpassport;
+    private javax.swing.JTextField txtprice;
+    private javax.swing.JSpinner txtseats;
     private javax.swing.JComboBox<String> txtsource;
     // End of variables declaration//GEN-END:variables
 }
