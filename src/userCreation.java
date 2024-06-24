@@ -1,3 +1,13 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
@@ -14,7 +24,11 @@ public class userCreation extends javax.swing.JInternalFrame {
      */
     public userCreation() {
         initComponents();
+        autoID();
     }
+    Connection con;
+    PreparedStatement pst; 
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,7 +45,7 @@ public class userCreation extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        txtuserid = new javax.swing.JLabel();
         txtfirstname = new javax.swing.JTextField();
         txtlastname = new javax.swing.JTextField();
         txtusername = new javax.swing.JTextField();
@@ -56,8 +70,9 @@ public class userCreation extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Password");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel6.setText("jLabel6");
+        txtuserid.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtuserid.setForeground(new java.awt.Color(255, 0, 0));
+        txtuserid.setText("jLabel6");
 
         txtfirstname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,7 +105,7 @@ public class userCreation extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)
+                            .addComponent(txtuserid)
                             .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(26, 26, 26)
@@ -103,7 +118,7 @@ public class userCreation extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel6))
+                    .addComponent(txtuserid))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -147,6 +162,30 @@ public class userCreation extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+     public void autoID(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/airline","root",""); 
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery("select MAX(id) from flight");
+            rs.next();
+            rs.getString("MAX(id)");
+            if(rs.getString("MAX(id)")==null){
+                txtuserid.setText("UO001");
+            }
+            else{
+                long id = Long.parseLong(rs.getString("MAX(id)").substring(2,rs.getString("MAX(id)").length()));
+                id++;
+                txtuserid.setText("U" + String.format("%03d", id));
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(addCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private void txtfirstnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfirstnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtfirstnameActionPerformed
@@ -160,11 +199,11 @@ public class userCreation extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtfirstname;
     private javax.swing.JTextField txtlastname;
     private javax.swing.JTextField txtpassword;
+    private javax.swing.JLabel txtuserid;
     private javax.swing.JTextField txtusername;
     // End of variables declaration//GEN-END:variables
 }
