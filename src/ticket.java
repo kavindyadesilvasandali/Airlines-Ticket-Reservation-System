@@ -71,9 +71,9 @@ public class ticket extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        txtflightno = new javax.swing.JLabel();
+        txtflightname = new javax.swing.JLabel();
+        txtdeptime = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jTextField2 = new javax.swing.JTextField();
         jSpinner1 = new javax.swing.JSpinner();
@@ -102,6 +102,11 @@ public class ticket extends javax.swing.JInternalFrame {
                 "Flight No", "Flight Name", "Source", "Departure", "Date", "DepTime", "ArrTime", "Charge"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setText("Ticket No");
@@ -242,17 +247,17 @@ public class ticket extends javax.swing.JInternalFrame {
 
         jLabel17.setText("Seats");
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel18.setText("jLabel18");
+        txtflightno.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtflightno.setForeground(new java.awt.Color(255, 0, 0));
+        txtflightno.setText("jLabel18");
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel19.setText("jLabel19");
+        txtflightname.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtflightname.setForeground(new java.awt.Color(255, 0, 0));
+        txtflightname.setText("jLabel19");
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel20.setText("jLabel20");
+        txtdeptime.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtdeptime.setForeground(new java.awt.Color(255, 0, 0));
+        txtdeptime.setText("jLabel20");
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -276,8 +281,8 @@ public class ticket extends javax.swing.JInternalFrame {
                             .addComponent(jLabel13))
                         .addGap(38, 38, 38)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtflightno, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtflightname, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
@@ -287,7 +292,7 @@ public class ticket extends javax.swing.JInternalFrame {
                         .addGap(37, 37, 37)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtdeptime, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(41, Short.MAX_VALUE))
@@ -296,17 +301,17 @@ public class ticket extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel18))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtflightno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jLabel19))
+                    .addComponent(txtflightname))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jLabel20))
+                    .addComponent(txtdeptime))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -538,6 +543,21 @@ public class ticket extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel Df= (DefaultTableModel)jTable1.getModel();
+        
+        int selectIndex =jTable1.getSelectedRow();
+        
+        txtflightno.setText(Df.getValueAt(selectIndex,0).toString());
+        txtflightname.setText(Df.getValueAt(selectIndex,1).toString());
+        txtdeptime.setText(Df.getValueAt(selectIndex,5).toString());
+        
+        
+        
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -551,10 +571,7 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -575,6 +592,9 @@ public class ticket extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtcustid;
     private javax.swing.JButton txtcustidz;
     private javax.swing.JComboBox<String> txtdepart;
+    private javax.swing.JLabel txtdeptime;
+    private javax.swing.JLabel txtflightname;
+    private javax.swing.JLabel txtflightno;
     private javax.swing.JLabel txtlastname;
     private javax.swing.JLabel txtpassport;
     private javax.swing.JComboBox<String> txtsource;
